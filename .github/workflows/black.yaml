@@ -6,7 +6,30 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: psf/black@stable
+      - name: set branch name
+        env:
+          TZ: 'Asia/Tokyo'
+        run: echo "CURRENT_DATETIME=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV 
+      - name: create new branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git switch -c fix_${{ env.DEST_BRANCH }}_${{ env.CURRENT_DATETIME }}
+          git push -u origin fix_${{ env.DEST_BRANCH }}_${{ env.CURRENT_DATETIME }}
+      - name: apply black
+        uses: psf/black@stable
         with:
-          options: "--check --verbose"
           src: "./src"
+      - name: commit fix format
+        uses: EndBug/add-and-commit@v7
+        with:
+          branch: fix_${{ env.DEST_BRANCH }}_${{ env.CURRENT_DATETIME }}
+          message: fix format
+      - name: create pull request
+        uses: repo-sync/pull-request@v2
+        with:
+          source_branch: fix_${{ env.DEST_BRANCH }}_${{ env.CURRENT_DATETIME }}
+          destination_branch: ${{ env.DEST_BRANCH }}
+          pr_title: fix format ${{ env.PR_TITLE }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
