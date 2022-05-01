@@ -14,7 +14,7 @@ jobs:
           options: "--check --verbose"
       - name: exit if no problem format
         run: exit_with_success
-        if: steps.check_format.outcome == "success"
+        if: steps.check_format.outcome == 'success'
       - name: set branch suffix
         env:
           TZ: 'Asia/Tokyo'
