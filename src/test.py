@@ -3,8 +3,9 @@ i = 1 + 2
 print(i)
 
 
-s = 'stf'
+s = "stf"
 
 
 def test():
     print("higa")
+    print("takeru maehar")
