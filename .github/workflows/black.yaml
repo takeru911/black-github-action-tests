@@ -25,7 +25,7 @@ jobs:
         uses: psf/black@stable
         with:
           src: "./src"
-          options: "--diff"
+          options: "-q"
         if: steps.check_format.outcome == 'failure'
       - name: commit fix format
         uses: EndBug/add-and-commit@v9
