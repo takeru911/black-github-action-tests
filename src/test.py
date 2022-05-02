@@ -8,3 +8,4 @@ s = 'stf'
 
 def test():
     print("higa")
+    print('takeru maehar')
